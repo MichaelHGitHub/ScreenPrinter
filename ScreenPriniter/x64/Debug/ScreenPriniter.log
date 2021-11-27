@@ -1,0 +1,9 @@
+﻿  CommandServer.cpp
+  main.cpp
+  MessagerProxy.cpp
+  PrintScreen.cpp
+  stdafx.cpp
+  Generating Code...
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1363,5): warning MSB8012: TargetPath(C:\Code\GitHub\ScreenPrinter\x64\Debug\ScreenPriniter.exe) does not match the Linker's OutputFile property value (C:\Code\GitHub\ScreenPrinter\x64\Debug\ScreenPriniterx64.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1365,5): warning MSB8012: TargetName(ScreenPriniter) does not match the Linker's OutputFile property value (ScreenPriniterx64). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+  ScreenPriniter.vcxproj -> C:\Code\GitHub\ScreenPrinter\x64\Debug\ScreenPriniter.exe

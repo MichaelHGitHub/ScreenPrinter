@@ -1,0 +1,7 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  llhook.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1363,5): warning MSB8012: TargetPath(C:\Code\GitHub\ScreenPrinter\x64\Debug\llhook.dll) does not match the Linker's OutputFile property value (C:\Code\GitHub\ScreenPrinter\x64\Debug\llhookx64.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1365,5): warning MSB8012: TargetName(llhook) does not match the Linker's OutputFile property value (llhookx64). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     Creating library C:\Code\GitHub\ScreenPrinter\x64\Debug\llhookx64.lib and object C:\Code\GitHub\ScreenPrinter\x64\Debug\llhookx64.exp
+  llhook.vcxproj -> C:\Code\GitHub\ScreenPrinter\x64\Debug\llhook.dll

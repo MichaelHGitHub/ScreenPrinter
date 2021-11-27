@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!-- ============================================= Macro ====================================================== -->
+<?define PROPERTY_PRODUCTVERSION = "$(env.zBUILDVER)" ?>
+
+<!-- ***PLEASE NOTE: Windows Installer requires all GUIDS to be in UPPERCASE -->
+
+<?if $(var.ProcessorArchitecture)=x64 ?>
+<?define PROPERTY_PRODUCTCODE = "1A74A7E6-C322-4EEB-A5F7-D377F79256C8" ?>
+<?define WIN64_FLAG = "yes"?>
+<?define PLATFORM = "x64"?>
+<?else?>
+<?define PROPERTY_PRODUCTCODE = "340B3C92-E3A0-47B4-9B03-8F6A48EB9443" ?>
+<?define WIN64_FLAG = "no"?>
+<?define PLATFORM = "x86"?>
+<?endif?>
+
+<?define PROPERTY_UPGRADECODE = "AEAE3000-98D9-4ACD-9FC4-8C2C552E3FA9" ?>
+<!-- Page id should be auto-generated type-->
+<?define PROPERTY_PACKAGEID="{????????-????-????-????-????????????}"?>
+
+<?if $(var.BuildType)=Debug?>
+<?define DEBUG = "Debug"?>
+<?else?>
+<?define DEBUG = ""?>
+<?endif?>
+
+<?define SOURCE_PATH=$(var.SourcePath)?>
+<?define BINARY_PATH=$(var.SOURCE_PATH)\binary?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" >
+
+
+  <!-- ============================================= Product ====================================================== -->
+  <Product Id="$(var.PROPERTY_PRODUCTCODE)" UpgradeCode="$(var.PROPERTY_UPGRADECODE)" Manufacturer="!(loc.Property_CompanyName)" Version="$(var.PROPERTY_PRODUCTVERSION)" Name="!(loc.Property_ProductName)" Language="!(loc.Property_ProductLanguage)">
+
+    <!-- ============================================= Package ====================================================== -->
+    <Package Id="$(var.PROPERTY_PACKAGEID)" Description="!(loc.Package_Description)" InstallerVersion="300" Platform="$(var.PLATFORM)" SummaryCodepage="!(loc.Package_ProductSummaryCodePage)" Languages="0" Compressed="no" AdminImage="no" InstallPrivileges="elevated" Keywords="!(loc.Property_Keywords)" Manufacturer="!(loc.Property_CompanyName)" ReadOnly="no" ShortNames="no"/>
+    
+    <!-- ============================================= Upgrade ====================================================== -->
+    <Upgrade Id="$(var.PROPERTY_UPGRADECODE)">
+      <UpgradeVersion Minimum="$(var.PROPERTY_PRODUCTVERSION)" Property="NEWAPPFOUND" OnlyDetect="yes" IncludeMinimum="no" />
+      <UpgradeVersion Minimum="1.00.0000" Maximum="$(var.PROPERTY_PRODUCTVERSION)" Property="OLDPRODUCTS" MigrateFeatures="yes" IncludeMinimum="yes" IncludeMaximum="no" />
+    </Upgrade>
+	
+	<!-- ============================================= Condition ====================================================== -->
+    <!-- The user should be Admin, or the installation will fail. -->
+    <Condition Message="!(loc.ADMINUSERERR)"><![CDATA[Privileged]]></Condition>
+
+    <!-- ============================================= Property ====================================================== -->
+    <Property Id="ALLUSERS"><![CDATA[1]]></Property>
+    <Property Id="ARPHELPLINK"><![CDATA[!(loc.ARPHELPLINK)]]></Property>
+    <Property Id="ARPNOREMOVE"><![CDATA[1]]></Property>
+    <Property Id="ARPNOREPAIR"><![CDATA[1]]></Property>
+    <Property Id="ARPPRODUCTICON"><![CDATA[DeviceCenter.ico]]></Property>
+    <Property Id="ARPURLINFOABOUT"><![CDATA[!(loc.ARPURLINFOABOUT)]]></Property>
+    <Property Id="ARPURLUPDATEINFO"><![CDATA[!(loc.ARPURLUPDATEINFO)]]></Property>
+
+    <Property Id="DESKTOP_FOLDER_NAME"><![CDATA[Screen Printer]]></Property>
+    <Property Id="DiskPrompt" Value="[1]" />
+    <Property Id="EXENAME"><![CDATA[ScreenPrinter.exe]]></Property>
+
+    <Property Id="FileInUseProcess"><![CDATA[0]]></Property>
+    <Property Id="INSTALLLEVEL"><![CDATA[100]]></Property>
+    <Property Id="NEWERVERSION" Secure="yes" />
+    <Property Id="OLDPRODUCTS" Secure="yes" />
+    <Property Id="OSCHECK"><![CDATA[1]]></Property>
+    <Property Id="UNINSTALL_DISPLAYNAME"><![CDATA[!(loc.Property_ProductName)]]></Property>
+
+    <!-- ============================================= Binary/Icon ====================================================== -->
+    <Icon Id="Help.ico"                 SourceFile="$(var.BINARY_PATH)\Help.ico" />
+    <Icon Id="ScreenPrinter.ico"        SourceFile="$(var.BINARY_PATH)\ScreenPrinter.ico" />
+
+    
+    <!-- ============================================= Media ====================================================== -->
+    <Media Id="1" DiskPrompt="Screen Printer" VolumeLabel="Screen Printer" />
+    
+    <!-- ============================================= FileCopy ====================================================== -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      
+      <?if $(var.ProcessorArchitecture)=x64 ?>
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLDIR" Name="Screen Printer" SourceName="Files">
+          <?include ITPIPApp.wxi?>
+          <?include ITPIPCmdDll.wxi?>
+          <?include ITPIPDriver64.wxi?>
+          <Directory Id="MODELS" Name="Models">
+            <?include ITPModel.wxi?>
+            <?include IPModel.wxi?>
+          </Directory>
+        </Directory>
+      </Directory>
+      <?else?>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="Screen Printer" SourceName="Files">
+          <?include ITPIPApp.wxi?>
+          <?include ITPIPCmdDll.wxi?>
+          <?include ITPIPDriver32.wxi?>
+          <Directory Id="MODELS" Name="Models">
+          <?include ITPModel.wxi?>
+          <?include IPModel.wxi?>
+          </Directory>
+        </Directory>
+      </Directory>
+      <?endif?>
+     </Directory>
+
+    <Feature Id="ScreenPrinter" ConfigurableDirectory="INSTALLDIR" Level="1" Title="ScreenPrinter">
+      <ComponentRef Id="ScreenPrinter.exe" />
+      <ComponentRef Id="llhook.dll" />
+    </Feature>
+
+    <!-- ============================================= Sequence ====================================================== -->
+    <InstallExecuteSequence>
+       <RemoveExistingProducts Before="InstallInitialize"/>
+    </InstallExecuteSequence>
+    <InstallUISequence>
+      <Custom Action="OpenSingletonEvent" Before="AppSearch">1</Custom>
+      <ResolveSource Before="CostFinalize"><![CDATA[Not Installed And Not PATCH]]></ResolveSource>
+    </InstallUISequence>
+  </Product>
+</Wix>
+
+
+
+
+
+
+
